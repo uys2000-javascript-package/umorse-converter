@@ -1,3 +1,8 @@
-import { toMorse, fromMorse } from "./service/converter.mjs";
+import {
+  toMorse,
+  toCustomMorse,
+  fromMorse,
+  fromCustomMorse,
+} from "./service/converter.mjs";
 
-export { toMorse, fromMorse };
+export { toMorse, toCustomMorse, fromMorse, fromCustomMorse };
