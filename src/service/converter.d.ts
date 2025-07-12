@@ -1,12 +1,14 @@
-export function toMorse(
+export function toMorse(text: string): string;
+export function toCustomMorse(
   text: string,
   dot: string,
   dash: string,
-  separatrix: string,
-  lang: string = "tr"
+  separatrix: string
 ): string;
 
-export function fromMorse(
+export function fromMorse(text: string): string;
+
+export function fromCustomMorse(
   text: string,
   dot: string,
   dash: string,

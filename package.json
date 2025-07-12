@@ -1,6 +1,6 @@
 {
   "name": "@uys2000/u-morse-converter",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Morse code converter for umorse app",
   "main": "./src/index.mjs",
   "repository": {
