@@ -1,48 +1,55 @@
-import morse from "../data/morse";
+import morse from "../data/morse.mjs";
+import {
+  customMorseWordToMorseWord,
+  morseCharToCustomChar,
+  morseCharToTextChar,
+} from "./utlis.mjs";
 
-export const toMorse = function (text, dot, dash, separatrix, lang = "tr") {
-  let lowerCaseText = "";
-  if (lang === "tr") lowerCaseText = text.toLocaleLowerCase("tr-TR");
-  else lowerCaseText = text.toLowerCase();
-
-  const lowerCaseChars = lowerCaseText.split("");
-  const morseChars = lowerCaseChars.map((lowerCaseChar) =>
-    lowerCaseChar.replace(/(.)/g, (m) =>
-      m in morse ? morse[m] : m == " " ? separatrix : m
-    )
-  );
-  const customMorseChars = morseChars.map((customMorseChar) =>
-    customMorseChar.replace(/(.)/g, (m) =>
-      m == "." ? dot : m == "-" ? dash : m
-    )
-  );
-
-  return customMorseChars.join(" ");
+/** @param {string} text */
+export const toMorse = function (text) {
+  var lowerText = text.toLowerCase();
+  const words = lowerText.split(" ");
+  const morseWords = words.map((word) => {
+    const chars = word.split("");
+    const morseChars = chars.map((char) => morse[char]);
+    return morseChars.join(" ");
+  });
+  return morseWords.join(" / ");
 };
 
-export const fromMorse = function (text, dot, dash, separatrix) {
-  const customMorseWords = text.split(separatrix);
+/** @param {string} text */
+export const toCustomMorse = function (text, dot, dash, separatrix) {
+  var lowerText = text.toLowerCase();
+  const words = lowerText.split(" ");
+  const morseWords = words.map((word) => {
+    const chars = word.split("");
+    const morseChars = chars.map((char) => morse[char]);
+    const customMorseChars = morseChars.map((morseChar) =>
+      morseChar.replace(/(.)/g, (c) => morseCharToCustomChar(c, dot, dash))
+    );
+    return customMorseChars.join(" ");
+  });
+  return morseWords.join(` ${separatrix} `);
+};
+
+/** @param {string} text */
+export const fromMorse = function (text) {
+  const morseWords = text.split(" / ");
+  const words = morseWords.map((morseWord) => {
+    const morseChars = morseWord.split(" ");
+    const chars = morseChars.map(morseCharToTextChar);
+    return chars.join("");
+  });
+  return words.join(" ");
+};
+
+export const fromCustomMorse = function (text, dot, dash, separatrix) {
+  const customMorseWords = text.split(` ${separatrix} `);
   const words = customMorseWords.map((customMorseWord) => {
-    const customMorseChars = customMorseWord.split(" ");
-    const chars = customMorseChars.map((customMorseChar) => {
-      const morseChar = customMorseChar.replace(
-        new RegExp(`${dot}|${dash}`, "g"),
-        (m) => {
-          if (m == dash) return "-";
-          else if (m == dot) return ".";
-          else if (m == separatrix) return " ";
-          else return m;
-        }
-      );
-      const char = morseChar.replace(morseChar.trim(), (m) => {
-        const i = Object.values(morse).indexOf(m);
-        if (i != -1) return Object.keys(morse)[i];
-        else return "";
-      });
-      return char;
-    });
-    const word = chars.join("");
-    return word;
+    const morseWord = customMorseWordToMorseWord(customMorseWord, dot, dash);
+    const morseChars = morseWord.split(" ");
+    const chars = morseChars.map(morseCharToTextChar);
+    return chars.join("");
   });
   return words.join(" ");
 };

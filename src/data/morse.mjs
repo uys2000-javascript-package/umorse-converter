@@ -1,3 +1,6 @@
+/**
+ * @type {Record<string, string>}
+ */
 export default {
   a: ".-",
   b: "-...",
