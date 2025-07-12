@@ -1,5 +1,5 @@
 {
-  "name": "@uys2000/umorse-converter",
+  "name": "@uys2000/u-morse-converter",
   "version": "0.0.1",
   "description": "Morse code converter for umorse app",
   "main": "./src/index.mjs",
